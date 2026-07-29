@@ -1,0 +1,36 @@
+<div class="col-md-3 col-lg-2 p-0">
+    <div class="aiop-sidebar">
+        <h6 class="text-uppercase text-muted fw-bold px-3 mb-3" style="font-size: 0.75rem; letter-spacing: 0.05em;">Staff Controls</h6>
+        <div class="d-flex flex-column">
+            <a href="/admin/dashboard" class="aiop-sidebar-link <%= active === 'dashboard' ? 'aiop-sidebar-active' : '' %>">
+                <i class="fa-solid fa-gauge me-2"></i> Dashboard
+            </a>
+            
+            <a href="/admin/tickets" class="aiop-sidebar-link <%= active === 'tickets' ? 'aiop-sidebar-active' : '' %>">
+                <i class="fa-solid fa-ticket me-2"></i> Ticket Queue
+            </a>
+            
+            <a href="/admin/users" class="aiop-sidebar-link <%= active === 'users' ? 'aiop-sidebar-active' : '' %>">
+                <i class="fa-solid fa-users me-2"></i> Customers
+            </a>
+            
+            <a href="/admin/analytics" class="aiop-sidebar-link <%= active === 'analytics' ? 'aiop-sidebar-active' : '' %>">
+                <i class="fa-solid fa-chart-pie me-2"></i> NLP & Analytics
+            </a>
+
+            <% if (user && user.role === 'admin') { %>
+                <a href="/admin/agents" class="aiop-sidebar-link <%= active === 'agents' ? 'aiop-sidebar-active' : '' %>">
+                    <i class="fa-solid fa-user-tie me-2"></i> Manage Agents
+                </a>
+            <% } %>
+        </div>
+
+        <div class="mt-5 px-3">
+            <div class="p-3 bg-light rounded" style="border: 1px solid var(--aiop-slate-200);">
+                <small class="text-muted d-block">Logged in as:</small>
+                <strong class="text-dark d-block text-truncate"><%= user.name %></strong>
+                <span class="badge bg-secondary text-uppercase mt-1" style="font-size: 0.65rem;"><%= user.role %></span>
+            </div>
+        </div>
+    </div>
+</div>

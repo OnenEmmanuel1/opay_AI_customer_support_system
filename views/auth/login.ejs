@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center" style="background-color: var(--aiop-slate-100);">
+    <div class="aiop-card" style="width: 100%; max-width: 450px;">
+        <div class="text-center mb-4">
+            <a href="/">
+                <div class="aiop-logo-icon mb-3" style="width: 50px; height: 50px;">
+                    <i class="fa-solid fa-bolt fs-3"></i>
+                </div>
+            </a>
+            <h3 class="fw-bold">Welcome Back</h3>
+            <p class="text-muted small">Log in to access OPaySupportAI dashboard</p>
+        </div>
+
+        <div class="alert alert-danger" id="errorBox" style="display: none; border-radius: var(--aiop-radius);"></div>
+
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold small text-muted">Email Address</label>
+                <input type="email" id="email" class="aiop-input" required placeholder="e.g. customer1@opay.com">
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label fw-bold small text-muted">Password</label>
+                <input type="password" id="password" class="aiop-input" required placeholder="Enter password">
+            </div>
+
+            <button type="submit" class="aiop-btn aiop-btn-primary w-100 py-2 text-white">
+                <i class="fa-solid fa-right-to-login me-2"></i> Log In
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="text-muted small mb-0">Don't have an account? <a href="/auth/register" class="fw-bold text-decoration-none" style="color: var(--aiop-green);">Sign Up</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('loginForm');
+    const errorBox = document.getElementById('errorBox');
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorBox.style.display = 'none';
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = result.redirect;
+                } else {
+                    errorBox.textContent = result.error || 'Login failed.';
+                    errorBox.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorBox.textContent = 'Connection error. Please try again.';
+                errorBox.style.display = 'block';
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../partials/footer') %>

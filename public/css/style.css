@@ -1,0 +1,411 @@
+/* OpaySupportAI Flat CSS Design System */
+
+:root {
+    /* Solid Color Tokens */
+    --aiop-green: #00b853;
+    --aiop-green-dark: #009641;
+    --aiop-green-light: #e6f8ee;
+    --aiop-dark: #0f172a;
+    --aiop-slate-800: #1e293b;
+    --aiop-slate-700: #334155;
+    --aiop-slate-600: #475569;
+    --aiop-slate-400: #94a3b8;
+    --aiop-slate-200: #e2e8f0;
+    --aiop-slate-100: #f1f5f9;
+    --aiop-white: #ffffff;
+    
+    --aiop-primary: #2563eb;
+    --aiop-danger: #dc2626;
+    --aiop-warning: #d97706;
+    --aiop-info: #0891b2;
+
+    /* Borders and Border Radius */
+    --aiop-border-width: 1px;
+    --aiop-radius: 4px; /* Crisp, flat corners */
+}
+
+/* Base resets & typography */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--aiop-slate-100);
+    color: var(--aiop-dark);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--aiop-dark);
+    margin-top: 0;
+}
+
+/* Custom classes prefixed with aiop-* */
+
+/* Header / Navbar */
+.aiop-navbar {
+    background-color: var(--aiop-white);
+    border-bottom: var(--aiop-border-width) solid var(--aiop-slate-200);
+    padding: 1rem 0;
+}
+
+.aiop-logo-icon {
+    background-color: var(--aiop-green);
+    color: var(--aiop-white);
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--aiop-radius);
+}
+
+/* Flat Cards */
+.aiop-card {
+    background-color: var(--aiop-white);
+    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    border-radius: var(--aiop-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.aiop-card-header {
+    border-bottom: var(--aiop-border-width) solid var(--aiop-slate-200);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Sidebar Navigation */
+.aiop-sidebar {
+    background-color: var(--aiop-white);
+    border-right: var(--aiop-border-width) solid var(--aiop-slate-200);
+    padding: 1.5rem 1rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.aiop-sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--aiop-slate-700);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: var(--aiop-radius);
+    margin-bottom: 0.5rem;
+    border: 1px solid transparent;
+}
+
+.aiop-sidebar-link:hover {
+    background-color: var(--aiop-slate-100);
+    color: var(--aiop-dark);
+    border-color: var(--aiop-slate-200);
+}
+
+.aiop-sidebar-active {
+    background-color: var(--aiop-green-light);
+    color: var(--aiop-green-dark) !important;
+    border-color: var(--aiop-green);
+    font-weight: 600;
+}
+
+/* Flat Form Controls */
+.aiop-input {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--aiop-dark);
+    background-color: var(--aiop-white);
+    background-clip: padding-box;
+    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    border-radius: var(--aiop-radius);
+    transition: none; /* Instant feedback */
+}
+
+.aiop-input:focus {
+    outline: none;
+    border-color: var(--aiop-green);
+    box-shadow: none;
+}
+
+/* Flat Buttons */
+.aiop-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: var(--aiop-border-width) solid transparent;
+    border-radius: var(--aiop-radius);
+    transition: none;
+}
+
+.aiop-btn-primary {
+    background-color: var(--aiop-green);
+    color: var(--aiop-white);
+}
+
+.aiop-btn-primary:hover {
+    background-color: var(--aiop-green-dark);
+}
+
+.aiop-btn-secondary {
+    background-color: var(--aiop-slate-200);
+    color: var(--aiop-slate-800);
+    border-color: var(--aiop-slate-200);
+}
+
+.aiop-btn-secondary:hover {
+    background-color: var(--aiop-slate-400);
+    color: var(--aiop-white);
+}
+
+.aiop-btn-danger {
+    background-color: var(--aiop-danger);
+    color: var(--aiop-white);
+}
+
+.aiop-btn-danger:hover {
+    background-color: #b91c1c;
+}
+
+.aiop-btn-outline {
+    background-color: transparent;
+    border-color: var(--aiop-slate-400);
+    color: var(--aiop-slate-700);
+}
+
+.aiop-btn-outline:hover {
+    background-color: var(--aiop-slate-100);
+    color: var(--aiop-dark);
+}
+
+/* Badges and Indicators */
+.aiop-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: var(--aiop-radius);
+    border: 1px solid transparent;
+}
+
+.aiop-badge-success {
+    background-color: var(--aiop-green-light);
+    color: var(--aiop-green-dark);
+    border-color: var(--aiop-green);
+}
+
+.aiop-badge-warning {
+    background-color: #fef3c7;
+    color: #b45309;
+    border-color: #f59e0b;
+}
+
+.aiop-badge-danger {
+    background-color: #fee2e2;
+    color: var(--aiop-danger);
+    border-color: var(--aiop-danger);
+}
+
+.aiop-badge-info {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-color: #0284c7;
+}
+
+/* Chat Widget / Interface Components */
+.aiop-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    border-radius: var(--aiop-radius);
+    background-color: var(--aiop-white);
+    overflow: hidden;
+}
+
+.aiop-chat-header {
+    background-color: var(--aiop-dark);
+    color: var(--aiop-white);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--aiop-border-width) solid var(--aiop-slate-700);
+}
+
+.aiop-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    background-color: var(--aiop-slate-100);
+}
+
+.aiop-chat-footer {
+    padding: 1rem;
+    background-color: var(--aiop-white);
+    border-top: var(--aiop-border-width) solid var(--aiop-slate-200);
+}
+
+/* Chat Bubbles */
+.aiop-chat-bubble {
+    max-width: 75%;
+    margin-bottom: 1rem;
+    padding: 0.875rem 1.125rem;
+    border-radius: var(--aiop-radius);
+    font-size: 0.95rem;
+    word-break: break-word;
+    border: var(--aiop-border-width) solid transparent;
+}
+
+.aiop-chat-bubble-user {
+    background-color: var(--aiop-green);
+    color: var(--aiop-white);
+    border-color: var(--aiop-green-dark);
+    margin-left: auto;
+}
+
+.aiop-chat-bubble-bot {
+    background-color: var(--aiop-white);
+    color: var(--aiop-dark);
+    border-color: var(--aiop-slate-200);
+    margin-right: auto;
+}
+
+.aiop-chat-bubble-agent {
+    background-color: #eff6ff;
+    color: #1e3a8a;
+    border-color: #bfdbfe;
+    margin-right: auto;
+}
+
+.aiop-timestamp {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--aiop-slate-400);
+    margin-top: 0.25rem;
+    text-align: right;
+}
+
+.aiop-chat-bubble-bot .aiop-timestamp, .aiop-chat-bubble-agent .aiop-timestamp {
+    text-align: left;
+}
+
+.aiop-typing-indicator {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--aiop-slate-200);
+    color: var(--aiop-slate-600);
+    border-radius: var(--aiop-radius);
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+/* Console-Style Analytics & Monitor Log Viewer */
+.aiop-console-log-viewer {
+    background-color: var(--aiop-dark);
+    color: #10b981; /* Terminal green */
+    font-family: 'Courier New', Courier, monospace;
+    padding: 1.5rem;
+    height: 400px;
+    overflow-y: auto;
+    border-radius: var(--aiop-radius);
+    border: 2px solid var(--aiop-slate-700);
+}
+
+.aiop-console-line {
+    margin-bottom: 0.5rem;
+    white-space: pre-wrap;
+}
+
+.aiop-console-info {
+    color: #38bdf8;
+}
+
+.aiop-console-warn {
+    color: #fbbf24;
+}
+
+.aiop-console-error {
+    color: #f87171;
+}
+
+/* Flat Console Tables */
+.aiop-console-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.aiop-console-table th {
+    background-color: var(--aiop-slate-800);
+    color: var(--aiop-white);
+    text-align: left;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: var(--aiop-border-width) solid var(--aiop-slate-700);
+}
+
+.aiop-console-table td {
+    padding: 0.75rem;
+    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    background-color: var(--aiop-white);
+    font-size: 0.9rem;
+}
+
+.aiop-console-table tr:nth-child(even) td {
+    background-color: var(--aiop-slate-100);
+}
+
+/* Grid & Layout Utilities */
+.aiop-dashboard-layout {
+    display: flex;
+    min-vh-100;
+}
+
+.aiop-dashboard-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* Suggestion Chips */
+.aiop-suggestion-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--aiop-slate-200);
+    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    color: var(--aiop-slate-700);
+    cursor: pointer;
+    font-size: 0.85rem;
+    border-radius: var(--aiop-radius);
+}
+
+.aiop-suggestion-chip:hover {
+    background-color: var(--aiop-green-light);
+    color: var(--aiop-green-dark);
+    border-color: var(--aiop-green);
+}

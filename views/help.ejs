@@ -1,0 +1,61 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<section class="py-5 mt-5">
+    <div class="container py-5 text-center">
+        <h1 class="display-4 fw-bold">Help Center</h1>
+        <p class="lead text-muted">How can we assist you today?</p>
+        
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="input-group input-group-lg shadow-sm mb-5">
+                    <input type="text" class="form-control border-0 px-4" placeholder="Search for help articles...">
+                    <button class="btn btn-opay px-5" type="button"><i class="fa-solid fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 text-start">
+            <div class="col-md-4">
+                <a href="/faq" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 rounded-4 card-hover">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-circle-question fs-1 text-opay-green mb-3"></i>
+                            <h5 class="fw-bold text-dark">FAQs</h5>
+                            <p class="text-muted mb-0">Find quick answers to common questions about our services.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/customer/chat" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 rounded-4 card-hover">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-robot fs-1 text-primary mb-3"></i>
+                            <h5 class="fw-bold text-dark">Live AI Chat</h5>
+                            <p class="text-muted mb-0">Chat with our intelligent assistant for instant support.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/contact" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 rounded-4 card-hover">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-headset fs-1 text-warning mb-3"></i>
+                            <h5 class="fw-bold text-dark">Contact Us</h5>
+                            <p class="text-muted mb-0">Reach out to our human support team for complex issues.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+</style>
+
+<%- include('partials/footer') %>

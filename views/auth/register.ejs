@@ -1,0 +1,82 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center py-5" style="background-color: var(--aiop-slate-100);">
+    <div class="aiop-card" style="width: 100%; max-width: 500px;">
+        <div class="text-center mb-4">
+            <a href="/">
+                <div class="aiop-logo-icon mb-3" style="width: 50px; height: 50px;">
+                    <i class="fa-solid fa-bolt fs-3"></i>
+                </div>
+            </a>
+            <h3 class="fw-bold">Create an Account</h3>
+            <p class="text-muted small">Join OPay for intelligent support systems</p>
+        </div>
+
+        <div class="alert alert-danger" id="errorBox" style="display: none; border-radius: var(--aiop-radius);"></div>
+
+        <form id="registerForm">
+            <div class="mb-3">
+                <label for="name" class="form-label fw-bold small text-muted">Full Name</label>
+                <input type="text" id="name" class="aiop-input" required placeholder="e.g. John Doe">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold small text-muted">Email Address</label>
+                <input type="email" id="email" class="aiop-input" required placeholder="e.g. user@gmail.com">
+            </div>
+            
+            <div class="mb-4">
+                <label for="password" class="form-label fw-bold small text-muted">Password</label>
+                <input type="password" id="password" class="aiop-input" required placeholder="Create password">
+            </div>
+            
+            <button type="submit" class="aiop-btn aiop-btn-primary w-100 py-2 text-white">
+                <i class="fa-solid fa-user-plus me-2"></i> Sign Up
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted small mb-0">Already have an account? <a href="/auth/login" class="fw-bold text-decoration-none" style="color: var(--aiop-green);">Log In</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registerForm');
+    const errorBox = document.getElementById('errorBox');
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorBox.style.display = 'none';
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = result.redirect;
+                } else {
+                    errorBox.textContent = result.error || 'Registration failed.';
+                    errorBox.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                errorBox.textContent = 'Connection error. Please try again.';
+                errorBox.style.display = 'block';
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../partials/footer') %>

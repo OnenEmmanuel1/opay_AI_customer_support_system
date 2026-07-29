@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg fixed-top aiop-navbar" style="background-color: var(--aiop-dark); border-bottom: 2px solid var(--aiop-slate-700);">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center text-decoration-none text-white" href="/admin/dashboard">
+            <div class="aiop-logo-icon me-2" style="background-color: var(--aiop-green);">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <span class="fw-bold fs-4 text-white">OPay <span style="color: var(--aiop-green);">Staff Console</span></span>
+        </a>
+        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarNav">
+            <i class="fa-solid fa-bars fs-3"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNavbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white opacity-75 <%= title === 'Admin Console' ? 'fw-bold opacity-100' : '' %>" href="/admin/dashboard">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white opacity-75 <%= title === 'Ticket Queue' ? 'fw-bold opacity-100' : '' %>" href="/admin/tickets">Tickets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white opacity-75 <%= title === 'Customer Management' ? 'fw-bold opacity-100' : '' %>" href="/admin/users">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white opacity-75 <%= title === 'Analytics & NLP Config' ? 'fw-bold opacity-100' : '' %>" href="/admin/analytics">Analytics</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <div class="me-3 text-end text-white">
+                    <small class="text-muted d-block" style="font-size: 0.7rem;">Role: <%= user.role.toUpperCase() %></small>
+                    <strong class="small"><%= user.name %></strong>
+                </div>
+                <form action="/api/auth/logout" method="POST" class="d-inline">
+                    <button type="submit" class="aiop-btn aiop-btn-danger btn-sm text-white">
+                        <i class="fa-solid fa-power-off me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Spacer to prevent content from hiding under the fixed navbar -->
+<div style="height: 75px;"></div>

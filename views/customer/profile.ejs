@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="aiop-card">
+                <div class="aiop-card-header text-center">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-user me-2 text-muted"></i> Account Details</h5>
+                </div>
+                
+                <div class="p-3">
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="d-flex justify-content-center align-items-center text-white font-weight-bold" style="width: 80px; height: 80px; background-color: var(--aiop-green); border-radius: var(--aiop-radius); font-size: 2.5rem;">
+                            <%= user.name.charAt(0).toUpperCase() %>
+                        </div>
+                    </div>
+
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="text-muted fw-bold small text-uppercase">Full Name</td>
+                                <td class="fw-bold"><%= user.name %></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-bold small text-uppercase">Email Address</td>
+                                <td class="fw-bold"><%= user.email %></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-bold small text-uppercase">Account Role</td>
+                                <td>
+                                    <span class="badge bg-secondary text-uppercase"><%= user.role %></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-bold small text-uppercase">KYC Verification</td>
+                                <td>
+                                    <span class="badge bg-info"><%= account.kyc_status %></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-bold small text-uppercase">Restriction State</td>
+                                <td>
+                                    <span class="badge <%= account.restriction_status === 'Active' ? 'bg-success' : 'bg-danger' %>"><%= account.restriction_status %></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center pt-3 border-top border-light">
+                    <a href="/customer/dashboard" class="aiop-btn aiop-btn-secondary w-100 text-decoration-none">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/chat-widget') %>
+<%- include('../partials/footer') %>

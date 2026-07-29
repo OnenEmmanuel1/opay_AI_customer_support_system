@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="fw-bold fs-5"><i class="fa-solid fa-money-bill-transfer me-2 text-muted"></i> Simulated Transaction History</span>
+                    <a href="/customer/dashboard" class="aiop-btn aiop-btn-outline btn-sm text-decoration-none">Back to Dashboard</a>
+                </div>
+
+                <% if (transactions && transactions.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="aiop-console-table">
+                            <thead>
+                                <tr>
+                                    <th>Reference Number</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Transaction Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% transactions.forEach(tx => { %>
+                                    <tr>
+                                        <td class="font-monospace fw-bold"><%= tx.reference_number %></td>
+                                        <td class="<%= tx.status === 'failed' ? 'text-danger' : 'text-success' %>">
+                                            ₦<%= parseFloat(tx.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 }) %>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= tx.status === 'completed' ? 'aiop-badge-success' : (tx.status === 'pending' ? 'aiop-badge-warning' : 'aiop-badge-danger') %>">
+                                                <%= tx.status %>
+                                            </span>
+                                        </td>
+                                        <td><%= new Date(tx.created_at).toLocaleString() %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted m-0 p-4 text-center">No simulated banking transactions logged on this account.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/chat-widget') %>
+<%- include('../partials/footer') %>

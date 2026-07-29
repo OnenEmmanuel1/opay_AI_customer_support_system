@@ -1,0 +1,119 @@
+<%- include('../partials/header') %>
+<%- include('../partials/admin-nav') %>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <%- include('../partials/admin-sidebar', { active: 'users' }) %>
+
+        <!-- Customers main content -->
+        <main class="col-md-9 col-lg-10 aiop-dashboard-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0"><i class="fa-solid fa-users me-2 text-muted"></i> Customer Management</h2>
+            </div>
+
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span>Registered Customers (Simulated Profile Checks)</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="aiop-console-table">
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Simulated Balance</th>
+                                <th>KYC status</th>
+                                <th>Restriction status</th>
+                                <th>Registered Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (customers && customers.length > 0) { %>
+                                <% customers.forEach(cust => { %>
+                                    <tr>
+                                        <td>#<%= cust.id %></td>
+                                        <td class="fw-semibold"><%= cust.name %></td>
+                                        <td><%= cust.email %></td>
+                                        <td class="fw-bold text-success">
+                                            ₦<%= parseFloat(cust.balance || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 }) %>
+                                        </td>
+                                        <td>
+                                            <select class="aiop-input py-1 kyc-update-select" data-customer-id="<%= cust.id %>" style="font-size: 0.85rem; width: auto; display: inline-block;">
+                                                <option value="Tier 1" <%= cust.kyc_status === 'Tier 1' ? 'selected' : '' %>>Tier 1</option>
+                                                <option value="Tier 2" <%= cust.kyc_status === 'Tier 2' ? 'selected' : '' %>>Tier 2</option>
+                                                <option value="Tier 3" <%= cust.kyc_status === 'Tier 3' ? 'selected' : '' %>>Tier 3</option>
+                                                <option value="Unverified" <%= cust.kyc_status === 'Unverified' ? 'selected' : '' %>>Unverified</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="aiop-input py-1 restriction-update-select" data-customer-id="<%= cust.id %>" style="font-size: 0.85rem; width: auto; display: inline-block;">
+                                                <option value="Active" <%= cust.restriction_status === 'Active' ? 'selected' : '' %>>Active</option>
+                                                <option value="Restricted" <%= cust.restriction_status === 'Restricted' ? 'selected' : '' %>>Restricted</option>
+                                                <option value="Frozen" <%= cust.restriction_status === 'Frozen' ? 'selected' : '' %>>Frozen</option>
+                                            </select>
+                                        </td>
+                                        <td><%= new Date(cust.created_at).toLocaleDateString() %></td>
+                                    </tr>
+                                <% }) %>
+                            <% else { %>
+                                <tr>
+                                    <td colspan="7" class="text-muted text-center py-4">No registered customers found.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle KYC and Restriction updates
+    const kycSelects = document.querySelectorAll('.kyc-update-select');
+    const restrictionSelects = document.querySelectorAll('.restriction-update-select');
+
+    const updateCustomerStatus = async (customerId, payload) => {
+        try {
+            const response = await fetch('/api/admin/customer/status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerId, ...payload })
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+            } else {
+                alert(result.error || 'Failed to update customer status.');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Update status error:', error);
+            alert('Connection error updating customer configuration.');
+            window.location.reload();
+        }
+    };
+
+    kycSelects.forEach(select => {
+        select.addEventListener('change', () => {
+            const customerId = select.getAttribute('data-customer-id');
+            const kycStatus = select.value;
+            updateCustomerStatus(customerId, { kycStatus });
+        });
+    });
+
+    restrictionSelects.forEach(select => {
+        select.addEventListener('change', () => {
+            const customerId = select.getAttribute('data-customer-id');
+            const restrictionStatus = select.value;
+            updateCustomerStatus(customerId, { restrictionStatus });
+        });
+    });
+});
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<section class="py-5 mt-5">
+    <div class="container py-5">
+        <h2 class="fw-bold text-center mb-5">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion accordion-flush shadow-sm rounded-4" id="faqAccordion">
+                    <div class="accordion-item border-0 rounded-4 mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                What happens if my transfer fails?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                If your transfer fails, our AI assistant can instantly check the status using your transaction reference. Depending on the network, reversed funds will reflect in your balance within 24 hours.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 rounded-4 mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                How does the AI support system work?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                Our AI uses Natural Language Processing to understand your questions in plain English. It checks our secure database and provides personalized responses based on your account status.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 rounded-4 mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Can I speak to a human agent?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                Yes. If the AI cannot resolve your issue, it will automatically escalate the chat context and create a priority ticket for our human agents, who are available 24/7.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

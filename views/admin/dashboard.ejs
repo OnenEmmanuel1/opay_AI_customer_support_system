@@ -1,0 +1,102 @@
+<%- include('../partials/header') %>
+<%- include('../partials/admin-nav') %>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <%- include('../partials/admin-sidebar', { active: 'dashboard' }) %>
+
+        <!-- Dashboard main content -->
+        <main class="col-md-9 col-lg-10 aiop-dashboard-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0"><i class="fa-solid fa-gauge me-2 text-muted"></i> Support Overview</h2>
+                <span class="text-muted fw-semibold">Dashboard Controls</span>
+            </div>
+
+            <!-- Stats Counters Row -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="aiop-card text-center mb-3">
+                        <div class="text-muted text-uppercase fw-bold small">Total Customers</div>
+                        <h2 class="fw-bold mt-2 text-primary mb-0"><%= stats.totalCustomers %></h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="aiop-card text-center mb-3">
+                        <div class="text-muted text-uppercase fw-bold small">Open Tickets</div>
+                        <h2 class="fw-bold mt-2 text-danger mb-0"><%= stats.openTickets %></h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="aiop-card text-center mb-3">
+                        <div class="text-muted text-uppercase fw-bold small">My Assigned Tickets</div>
+                        <h2 class="fw-bold mt-2 text-warning mb-0"><%= stats.myOpenTickets %></h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="aiop-card text-center mb-3">
+                        <div class="text-muted text-uppercase fw-bold small">Chat Sessions</div>
+                        <h2 class="fw-bold mt-2 text-success mb-0"><%= stats.totalConversations %></h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Tickets Table -->
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="fw-bold">Recent Escalations</span>
+                    <a href="/admin/tickets" class="aiop-btn aiop-btn-outline btn-sm text-decoration-none">View Full Queue</a>
+                </div>
+
+                <% if (recentTickets && recentTickets.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="aiop-console-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Customer</th>
+                                    <th>Category</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Assigned Staff</th>
+                                    <th>Date Escalated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% recentTickets.forEach(t => { %>
+                                    <tr>
+                                        <td>#<%= t.id %></td>
+                                        <td class="fw-semibold"><%= t.customer_name %></td>
+                                        <td class="text-capitalize"><%= t.category.replace('_', ' ') %></td>
+                                        <td>
+                                            <span class="aiop-badge <%= t.priority === 'urgent' || t.priority === 'high' ? 'aiop-badge-danger' : (t.priority === 'medium' ? 'aiop-badge-warning' : 'aiop-badge-info') %>">
+                                                <%= t.priority %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= t.status === 'resolved' || t.status === 'closed' ? 'aiop-badge-success' : 'aiop-badge-warning' %>">
+                                                <%= t.status %>
+                                            </span>
+                                        </td>
+                                        <td><%= t.agent_name || 'Unassigned' %></td>
+                                        <td><%= new Date(t.created_at).toLocaleString() %></td>
+                                        <td>
+                                            <a href="/admin/ticket/<%= t.id %>" class="aiop-btn aiop-btn-primary btn-sm text-white text-decoration-none">
+                                                <i class="fa-solid fa-eye me-1"></i> Monitor & Reply
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted text-center py-4 m-0">No tickets found in the queue.</p>
+                <% } %>
+            </div>
+        </main>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

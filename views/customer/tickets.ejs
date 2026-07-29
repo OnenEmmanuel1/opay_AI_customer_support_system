@@ -1,0 +1,137 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Ticket Creation Form -->
+        <div class="col-md-4">
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Create New Ticket</span>
+                </div>
+                
+                <form id="createTicketForm">
+                    <div class="mb-3">
+                        <label for="category" class="form-label fw-bold small text-muted">Category</label>
+                        <select id="category" class="aiop-input" required>
+                            <option value="failed_transaction">Failed Transaction</option>
+                            <option value="kyc_issue">KYC & Identity Verification</option>
+                            <option value="account_restriction">Account restriction / Blocked</option>
+                            <option value="card_issue">ATM / Virtual Card Issue</option>
+                            <option value="other">General Inquiry</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="priority" class="form-label fw-bold small text-muted">Priority</label>
+                        <select id="priority" class="aiop-input" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold small text-muted">Description / Issue details</label>
+                        <textarea id="description" class="aiop-input" rows="4" placeholder="Describe your issue with reference numbers if applicable..." required></textarea>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="aiop-btn aiop-btn-primary text-white">
+                            <i class="fa-solid fa-plus me-2"></i> Submit Ticket
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tickets List -->
+        <div class="col-md-8">
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="fw-bold"><i class="fa-solid fa-ticket me-2 text-muted"></i> Support Ticket History</span>
+                </div>
+
+                <% if (tickets && tickets.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="aiop-console-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Category</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Assigned Agent</th>
+                                    <th>Date Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% tickets.forEach(t => { %>
+                                    <tr>
+                                        <td>#<%= t.id %></td>
+                                        <td>
+                                            <span class="text-capitalize"><%= t.category.replace('_', ' ') %></span>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= t.priority === 'urgent' || t.priority === 'high' ? 'aiop-badge-danger' : (t.priority === 'medium' ? 'aiop-badge-warning' : 'aiop-badge-info') %>">
+                                                <%= t.priority %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= t.status === 'resolved' || t.status === 'closed' ? 'aiop-badge-success' : 'aiop-badge-warning' %>">
+                                                <%= t.status %>
+                                            </span>
+                                        </td>
+                                        <td><%= t.agent_name || 'Pending Assignment' %></td>
+                                        <td><%= new Date(t.created_at).toLocaleDateString() %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted m-0 p-4 text-center">No ticket history found. Create one if you need support.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('createTicketForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const category = document.getElementById('category').value;
+            const priority = document.getElementById('priority').value;
+            const description = document.getElementById('description').value.trim();
+
+            if (!category || !description) return;
+
+            try {
+                const response = await fetch('/api/tickets/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category, priority, description })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Support ticket submitted successfully!');
+                    window.location.reload();
+                } else {
+                    alert(result.error || 'Failed to submit ticket.');
+                }
+            } catch (error) {
+                console.error('Submit ticket error:', error);
+                alert('Connection error submitting support ticket.');
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../partials/chat-widget') %>
+<%- include('../partials/footer') %>

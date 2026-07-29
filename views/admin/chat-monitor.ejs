@@ -1,0 +1,224 @@
+<%- include('../partials/header') %>
+<%- include('../partials/admin-nav') %>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <%- include('../partials/admin-sidebar', { active: 'tickets' }) %>
+
+        <!-- Chat Monitor Console -->
+        <main class="col-md-9 col-lg-10 aiop-dashboard-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0"><i class="fa-solid fa-comments me-2 text-muted"></i> Support Console</h2>
+                <a href="/admin/tickets" class="aiop-btn aiop-btn-secondary btn-sm text-decoration-none">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Back to Queue
+                </a>
+            </div>
+
+            <div class="row">
+                <!-- Chat Transcript Viewer -->
+                <div class="col-md-8">
+                    <div class="aiop-card">
+                        <div class="aiop-card-header">
+                            <span>Conversation Log (Ticket #<%= ticket.id %>)</span>
+                            <span class="badge bg-secondary font-monospace">Conversation ID: <%= ticket.conversation_id %></span>
+                        </div>
+
+                        <!-- Chat Message Area -->
+                        <div class="aiop-chat-container" style="height: 55vh;">
+                            <div class="aiop-chat-body" id="consoleChatWindow" style="background-color: var(--aiop-slate-100);">
+                                <% messages.forEach(msg => { %>
+                                    <div class="d-flex mb-3 <%= msg.sender === 'user' ? 'justify-content-end' : 'justify-content-start' %>">
+                                        <div class="aiop-chat-bubble <%= msg.sender === 'user' ? 'aiop-chat-bubble-user' : (msg.sender === 'bot' ? 'aiop-chat-bubble-bot' : 'aiop-chat-bubble-agent') %>">
+                                            <p class="mb-0">
+                                                <strong><%= msg.sender.toUpperCase() %>:</strong> <%= msg.content %>
+                                            </p>
+                                            
+                                            <% if (msg.sender === 'bot' && msg.detected_intent) { %>
+                                                <small class="d-block text-muted mt-1 border-top pt-1 font-monospace" style="font-size: 0.7rem;">
+                                                    Intent: <%= msg.detected_intent %> | Conf: <%= (msg.confidence_score * 100).toFixed(1) %>%
+                                                </small>
+                                            <% } %>
+
+                                            <span class="aiop-timestamp"><%= new Date(msg.created_at).toLocaleTimeString() %></span>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+
+                            <!-- Agent Quick Reply Footer -->
+                            <div class="aiop-chat-footer">
+                                <form id="agentReplyForm" class="d-flex">
+                                    <input type="text" id="replyInput" class="aiop-input me-2" placeholder="Type your response to the customer..." required>
+                                    <button type="submit" class="aiop-btn aiop-btn-primary px-4">
+                                        <i class="fa-solid fa-paper-plane me-1"></i> Reply
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Controls Metadata Panel -->
+                <div class="col-md-4">
+                    <div class="aiop-card">
+                        <div class="aiop-card-header">
+                            <span class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Ticket Parameters</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold small text-muted d-block">Customer</label>
+                            <div class="p-2 bg-light rounded">
+                                <strong class="text-dark"><%= ticket.customer_name %></strong>
+                                <span class="d-block text-muted small"><%= ticket.customer_email %></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold small text-muted d-block">Category</label>
+                            <span class="badge bg-secondary text-capitalize p-2 mt-1"><%= ticket.category.replace('_', ' ') %></span>
+                        </div>
+
+                        <!-- Update Lifecycle Status -->
+                        <div class="mb-3">
+                            <label for="ticketStatus" class="fw-bold small text-muted">Ticket Lifecycle State</label>
+                            <select id="ticketStatus" class="aiop-input mt-1">
+                                <option value="open" <%= ticket.status === 'open' ? 'selected' : '' %>>Open</option>
+                                <option value="in_progress" <%= ticket.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                                <option value="resolved" <%= ticket.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
+                                <option value="closed" <%= ticket.status === 'closed' ? 'selected' : '' %>>Closed</option>
+                            </select>
+                        </div>
+
+                        <!-- Reassign Agent -->
+                        <div class="mb-4">
+                            <label for="ticketAgent" class="fw-bold small text-muted">Assigned Agent</label>
+                            <select id="ticketAgent" class="aiop-input mt-1">
+                                <option value="">-- Unassigned --</option>
+                                <% agents.forEach(a => { %>
+                                    <option value="<%= a.id %>" <%= ticket.assigned_agent_id === a.id ? 'selected' : '' %>><%= a.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="pt-3 border-top border-light text-muted small">
+                            <span class="d-block">Escalated: <%= new Date(ticket.created_at).toLocaleString() %></span>
+                            <% if (ticket.resolved_at) { %>
+                                <span class="d-block text-success">Resolved: <%= new Date(ticket.resolved_at).toLocaleString() %></span>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const chatWindow = document.getElementById('consoleChatWindow');
+    if (chatWindow) {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    const replyForm = document.getElementById('agentReplyForm');
+    const replyInput = document.getElementById('replyInput');
+    const ticketStatusSelect = document.getElementById('ticketStatus');
+    const ticketAgentSelect = document.getElementById('ticketAgent');
+
+    const conversationId = <%= ticket.conversation_id %>;
+    const ticketId = <%= ticket.id %>;
+
+    // Send Support Reply
+    if (replyForm) {
+        replyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = replyInput.value.trim();
+            if (!text) return;
+
+            try {
+                const response = await fetch('/api/tickets/reply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ conversationId, content: text })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    replyInput.value = '';
+                    // Dynamically append message to UI console
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'd-flex mb-3 justify-content-start';
+                    wrapper.innerHTML = `
+                        <div class="aiop-chat-bubble aiop-chat-bubble-agent">
+                            <p class="mb-0"><strong>AGENT (You):</strong> ${text}</p>
+                            <span class="aiop-timestamp">${new Date().toLocaleTimeString()}</span>
+                        </div>
+                    `;
+                    chatWindow.appendChild(wrapper);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                } else {
+                    alert(result.error || 'Failed to send reply.');
+                }
+            } catch (error) {
+                console.error('Send reply error:', error);
+                alert('Connection error sending response.');
+            }
+        });
+    }
+
+    // Update Status
+    if (ticketStatusSelect) {
+        ticketStatusSelect.addEventListener('change', async () => {
+            const status = ticketStatusSelect.value;
+            try {
+                const response = await fetch('/api/tickets/status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticketId, status })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Ticket state updated successfully.');
+                    window.location.reload();
+                } else {
+                    alert(result.error || 'Failed to update state.');
+                }
+            } catch (error) {
+                console.error('Update status error:', error);
+                alert('Connection error updating status.');
+            }
+        });
+    }
+
+    // Reassign Agent
+    if (ticketAgentSelect) {
+        ticketAgentSelect.addEventListener('change', async () => {
+            const agentId = ticketAgentSelect.value;
+            if (!agentId) return;
+
+            try {
+                const response = await fetch('/api/tickets/reassign', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticketId, agentId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.error || 'Failed to reassign agent.');
+                }
+            } catch (error) {
+                console.error('Reassign agent error:', error);
+                alert('Connection error reassigning agent.');
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../partials/footer') %>

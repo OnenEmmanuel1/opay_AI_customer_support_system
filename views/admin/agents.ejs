@@ -1,0 +1,125 @@
+<%- include('../partials/header') %>
+<%- include('../partials/admin-nav') %>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <%- include('../partials/admin-sidebar', { active: 'agents' }) %>
+
+        <!-- Agents Management main content -->
+        <main class="col-md-9 col-lg-10 aiop-dashboard-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0"><i class="fa-solid fa-user-tie me-2 text-muted"></i> Support Agent Directory</h2>
+            </div>
+
+            <div class="row">
+                <!-- Create Agent Form -->
+                <div class="col-md-4">
+                    <div class="aiop-card">
+                        <div class="aiop-card-header">
+                            <span>Register Support Agent</span>
+                        </div>
+                        
+                        <form id="createAgentForm">
+                            <div class="mb-3">
+                                <label for="agentName" class="form-label fw-bold small text-muted">Full Name</label>
+                                <input type="text" id="agentName" class="aiop-input" placeholder="e.g. Agent Daniel" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="agentEmail" class="form-label fw-bold small text-muted">Email Address</label>
+                                <input type="email" id="agentEmail" class="aiop-input" placeholder="e.g. daniel@opay.com" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="agentPassword" class="form-label fw-bold small text-muted">Temporary Password</label>
+                                <input type="password" id="agentPassword" class="aiop-input" placeholder="e.g. agentSecret123" required>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="aiop-btn aiop-btn-primary text-white">
+                                    <i class="fa-solid fa-plus me-2"></i> Register Agent
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Agent List -->
+                <div class="col-md-8">
+                    <div class="aiop-card">
+                        <div class="aiop-card-header">
+                            <span>Active Support Staff</span>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="aiop-console-table">
+                                <thead>
+                                    <tr>
+                                        <th>Agent ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Date Added</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (agents && agents.length > 0) { %>
+                                        <% agents.forEach(agent => { %>
+                                            <tr>
+                                                <td>#<%= agent.id %></td>
+                                                <td class="fw-semibold"><%= agent.name %></td>
+                                                <td><%= agent.email %></td>
+                                                <td><%= new Date(agent.created_at).toLocaleDateString() %></td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4" class="text-muted text-center py-4">No active agents configured.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('createAgentForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('agentName').value.trim();
+            const email = document.getElementById('agentEmail').value.trim();
+            const password = document.getElementById('agentPassword').value;
+
+            if (!name || !email || !password) return;
+
+            try {
+                const response = await fetch('/api/admin/agents/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Support agent registered successfully!');
+                    window.location.reload();
+                } else {
+                    alert(result.error || 'Failed to register agent.');
+                }
+            } catch (error) {
+                console.error('Create agent error:', error);
+                alert('Connection error registering agent.');
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../partials/footer') %>

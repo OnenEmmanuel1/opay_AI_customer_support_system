@@ -1,0 +1,149 @@
+<%- include('../partials/header') %>
+<%- include('../partials/admin-nav') %>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <%- include('../partials/admin-sidebar', { active: 'analytics' }) %>
+
+        <!-- Reports main content -->
+        <main class="col-md-9 col-lg-10 aiop-dashboard-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0"><i class="fa-solid fa-chart-pie me-2 text-muted"></i> Analytics & NLP Engine Config</h2>
+                <button class="aiop-btn aiop-btn-primary text-white" id="retrainNlpBtn">
+                    <i class="fa-solid fa-brain me-2"></i> Retrain NLP Model
+                </button>
+            </div>
+
+            <!-- NLP Status Indicators -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="aiop-card">
+                        <div class="aiop-card-header">
+                            <span>NLP Model Registry</span>
+                            <span class="badge <%= isNLPCompiled ? 'bg-success' : 'bg-warning' %> text-uppercase">
+                                <%= isNLPCompiled ? 'Compiled' : 'Uninitialized' %>
+                            </span>
+                        </div>
+                        <p class="text-muted small">The assistant uses a Bayesian classifier trained on intent utterances in the database. Adding custom utterances to the database tables requires retraining to apply the modifications.</p>
+                        
+                        <div class="table-responsive">
+                            <table class="aiop-console-table">
+                                <thead>
+                                    <tr>
+                                        <th>Intent Tag</th>
+                                        <th>Description</th>
+                                        <th>Utterances Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% intents.forEach(intent => { %>
+                                        <tr>
+                                            <td class="font-monospace fw-bold"><%= intent.tag %></td>
+                                            <td><%= intent.description || 'No description' %></td>
+                                            <td><%= intent.utterance_count %> utterances</td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Console-Style Analytics Terminal -->
+                <div class="col-md-6">
+                    <div class="aiop-card">
+                        <div class="aiop-card-header">
+                            <span>System Metrics Terminal Output</span>
+                            <span class="badge bg-dark font-monospace text-success">ONLINE</span>
+                        </div>
+                        
+                        <div class="aiop-console-log-viewer" id="analyticsConsole">
+                            <div class="aiop-console-line aiop-console-info">[sys-info] Fetching metrics from support logs...</div>
+                            <!-- Appended dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const consoleView = document.getElementById('analyticsConsole');
+    const retrainBtn = document.getElementById('retrainNlpBtn');
+
+    // Helper to log lines to terminal
+    const logLine = (text, type = 'info') => {
+        const line = document.createElement('div');
+        line.className = `aiop-console-line aiop-console-${type}`;
+        line.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+        consoleView.appendChild(line);
+        consoleView.scrollTop = consoleView.scrollHeight;
+    };
+
+    // Load metrics via AJAX on mount
+    const loadMetrics = async () => {
+        try {
+            const response = await fetch('/api/admin/analytics');
+            const result = await response.json();
+            if (result.success) {
+                const metrics = result.metrics;
+                
+                logLine('Metrics loaded successfully.', 'info');
+                logLine(`Average Resolution Time: ${metrics.avgResolutionTime}`, 'info');
+                logLine(`Overall Ticket Resolution Rate: ${metrics.resolutionRate}`, 'info');
+                
+                logLine('\n--- Ticket volume by category ---', 'info');
+                metrics.ticketCategoryVolume.forEach(c => {
+                    logLine(` * ${c.category.toUpperCase()}: ${c.volume} tickets`, 'warn');
+                });
+
+                logLine('\n--- Intent classifier performance ---', 'info');
+                metrics.intentAccuracy.forEach(i => {
+                    logLine(` * INTENT [${i.intent}]: vol=${i.volume}, avg_conf=${i.avgConfidence}%`, 'warn');
+                });
+
+                logLine('\nSystem metrics scan complete.', 'info');
+            } else {
+                logLine('Failed to fetch analytics metrics.', 'error');
+            }
+        } catch (error) {
+            console.error('Fetch analytics error:', error);
+            logLine('Connection error retrieving analytics data.', 'error');
+        }
+    };
+
+    loadMetrics();
+
+    // Trigger NLP Retraining
+    if (retrainBtn) {
+        retrainBtn.addEventListener('click', async () => {
+            logLine('Sending retrain request...', 'info');
+            retrainBtn.disabled = true;
+            try {
+                const response = await fetch('/api/admin/nlp/retrain', { method: 'POST' });
+                const result = await response.json();
+                retrainBtn.disabled = false;
+                
+                if (result.success) {
+                    logLine('Training complete. Model compiled and active.', 'info');
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    logLine(`Training failed: ${result.error}`, 'error');
+                    alert(result.error || 'Failed to retrain classifier.');
+                }
+            } catch (error) {
+                console.error('Retrain error:', error);
+                retrainBtn.disabled = false;
+                logLine('Connection error during training execution.', 'error');
+                alert('Connection error retraining NLP model.');
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../partials/footer') %>

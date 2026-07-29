@@ -1,0 +1,142 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Account Overview Panel -->
+        <div class="col-md-4">
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Simulated Wallet</span>
+                </div>
+                <div class="mb-4">
+                    <h6 class="text-muted mb-1">Account Holder</h6>
+                    <h5 class="fw-bold mb-3"><%= user.name %></h5>
+                    <h6 class="text-muted mb-1">Available Balance</h6>
+                    <h2 class="fw-bold text-success mb-0">₦<%= parseFloat(account.balance).toLocaleString('en-NG', { minimumFractionDigits: 2 }) %></h2>
+                </div>
+                <div class="pt-3 border-top border-light">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">KYC Tier:</span>
+                        <span class="badge bg-secondary"><%= account.kyc_status %></span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Account Status:</span>
+                        <span class="badge <%= account.restriction_status === 'Active' ? 'bg-success' : 'bg-danger' %>"><%= account.restriction_status %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Quick Support</span>
+                </div>
+                <div class="d-grid gap-2">
+                    <a href="/customer/chat" class="aiop-btn aiop-btn-primary text-white text-decoration-none">
+                        <i class="fa-solid fa-comments me-2"></i> Launch Live AI Support
+                    </a>
+                    <a href="/customer/tickets" class="aiop-btn aiop-btn-outline text-decoration-none text-center">
+                        <i class="fa-solid fa-ticket me-2"></i> Create Support Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="col-md-8">
+            <!-- Simulated Transactions -->
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="fw-bold"><i class="fa-solid fa-money-bill-transfer me-2 text-muted"></i> Recent Transactions (Simulated)</span>
+                    <a href="/customer/transactions" class="btn btn-sm btn-link text-decoration-none">View All</a>
+                </div>
+                
+                <% if (transactions && transactions.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="aiop-console-table">
+                            <thead>
+                                <tr>
+                                    <th>Ref Number</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% transactions.forEach(tx => { %>
+                                    <tr>
+                                        <td class="font-monospace fw-bold"><%= tx.reference_number %></td>
+                                        <td class="<%= tx.status === 'failed' ? 'text-danger' : 'text-success' %>">
+                                            ₦<%= parseFloat(tx.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 }) %>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= tx.status === 'completed' ? 'aiop-badge-success' : (tx.status === 'pending' ? 'aiop-badge-warning' : 'aiop-badge-danger') %>">
+                                                <%= tx.status %>
+                                            </span>
+                                        </td>
+                                        <td><%= new Date(tx.created_at).toLocaleDateString() %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted m-0 p-3 text-center">No simulated transaction records found.</p>
+                <% } %>
+            </div>
+
+            <!-- Support Tickets -->
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <span class="fw-bold"><i class="fa-solid fa-ticket me-2 text-muted"></i> Recent Tickets</span>
+                    <a href="/customer/tickets" class="btn btn-sm btn-link text-decoration-none">View All</a>
+                </div>
+                
+                <% if (tickets && tickets.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="aiop-console-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Category</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Assigned Agent</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% tickets.forEach(t => { %>
+                                    <tr>
+                                        <td>#<%= t.id %></td>
+                                        <td>
+                                            <span class="text-capitalize"><%= t.category.replace('_', ' ') %></span>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= t.priority === 'urgent' || t.priority === 'high' ? 'aiop-badge-danger' : (t.priority === 'medium' ? 'aiop-badge-warning' : 'aiop-badge-info') %>">
+                                                <%= t.priority %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="aiop-badge <%= t.status === 'resolved' || t.status === 'closed' ? 'aiop-badge-success' : 'aiop-badge-warning' %>">
+                                                <%= t.status %>
+                                            </span>
+                                        </td>
+                                        <td><%= t.agent_name || 'Pending Assignment' %></td>
+                                        <td><%= new Date(t.created_at).toLocaleDateString() %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted m-0 p-3 text-center">You have no active support tickets.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/chat-widget') %>
+<%- include('../partials/footer') %>

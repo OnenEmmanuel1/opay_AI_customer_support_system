@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="aiop-card">
+                <div class="aiop-card-header">
+                    <div class="d-flex align-items-center">
+                        <div class="aiop-logo-icon me-2" style="background-color: var(--aiop-green);">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 fw-bold">OPay AI Assistant</h5>
+                            <small class="text-muted"><i class="fa-solid fa-circle text-success me-1" style="font-size: 8px;"></i>Always active</small>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="aiop-btn aiop-btn-danger p-2" id="clearChatBtn" title="Clear Chat Session">
+                            <i class="fa-solid fa-trash me-1"></i> Clear Chat
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="aiop-chat-container">
+                    <div class="aiop-chat-body" id="chatWindow">
+                        <!-- Standard welcome bubble -->
+                        <div class="d-flex mb-3 justify-content-start">
+                            <div class="aiop-chat-bubble aiop-chat-bubble-bot">
+                                <p class="mb-0">Hello <strong><%= user.name %></strong>! I am your OPay AI customer assistant. I can check your balance, transaction status, KYC tier, or unblock query instantly. How can I help you today?</p>
+                                <span class="aiop-timestamp"><%= new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="px-3 py-2 bg-light" id="typingIndicator" style="display: none; border-top: var(--aiop-border-width) solid var(--aiop-slate-200);">
+                        <div class="aiop-typing-indicator m-0">OPay AI is checking logs...</div>
+                    </div>
+
+                    <!-- Footer / Inputs -->
+                    <div class="aiop-chat-footer">
+                        <form id="chatForm" class="d-flex">
+                            <input type="text" id="chatInput" class="aiop-input me-2" placeholder="Type your message here (e.g. check balance)..." autocomplete="off" required>
+                            <button type="submit" class="aiop-btn aiop-btn-primary px-4">
+                                <i class="fa-solid fa-paper-plane me-1"></i> Send
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Suggestion Chips -->
+                <div class="mt-4">
+                    <h6 class="text-muted fw-bold mb-2" style="font-size: 0.8rem;">Common Banking Queries:</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="aiop-suggestion-chip border-0">what is my balance</button>
+                        <button class="aiop-suggestion-chip border-0">my transfer failed</button>
+                        <button class="aiop-suggestion-chip border-0">why is my payment pending</button>
+                        <button class="aiop-suggestion-chip border-0">my account is blocked</button>
+                        <button class="aiop-suggestion-chip border-0">verify my account</button>
+                        <button class="aiop-suggestion-chip border-0">speak to agent</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg fixed-top aiop-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center text-decoration-none" href="/">
+            <div class="aiop-logo-icon me-2">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <span class="fw-bold fs-4 text-dark">OPay <span style="color: var(--aiop-green);">AI</span></span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="fa-solid fa-bars fs-3"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link <%= title === 'Home' ? 'active fw-bold' : '' %> text-dark" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= title === 'About Us' ? 'active fw-bold' : '' %> text-dark" href="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= title === 'Our Services' ? 'active fw-bold' : '' %> text-dark" href="/services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= title === 'Help Center' ? 'active fw-bold' : '' %> text-dark" href="/help">Help Center</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <% if (user) { %>
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center text-decoration-none text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="me-2 d-flex justify-content-center align-items-center text-white font-weight-bold" style="width: 32px; height: 32px; background-color: var(--aiop-green); border-radius: var(--aiop-radius);">
+                                <%= user.name.charAt(0).toUpperCase() %>
+                            </div>
+                            <span class="fw-medium"><%= user.name.split(' ')[0] %></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="border: 1px solid var(--aiop-slate-200) !important; border-radius: var(--aiop-radius);">
+                            <% if (user.role === 'admin' || user.role === 'agent') { %>
+                                <li><a class="dropdown-item" href="/admin/dashboard"><i class="fa-solid fa-gauge me-2"></i>Admin Dashboard</a></li>
+                            <% } else { %>
+                                <li><a class="dropdown-item" href="/customer/dashboard"><i class="fa-solid fa-gauge me-2"></i>My Dashboard</a></li>
+                                <li><a class="dropdown-item" href="/customer/profile"><i class="fa-solid fa-user me-2"></i>My Profile</a></li>
+                                <li><a class="dropdown-item" href="/customer/tickets"><i class="fa-solid fa-ticket me-2"></i>Support Tickets</a></li>
+                            <% } %>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/api/auth/logout" method="POST" id="logoutForm" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                <% } else { %>
+                    <a href="/auth/login" class="aiop-btn aiop-btn-outline me-2 text-decoration-none">Log In</a>
+                    <a href="/auth/register" class="aiop-btn aiop-btn-primary text-white text-decoration-none">Open Account</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Spacer to prevent content from hiding under the fixed navbar -->
+<div style="height: 75px;"></div>

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: opay_app
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=opaysecret
+      - DB_NAME=ai_banking_support
+      - SESSION_SECRET=opay_super_secret_key_2026
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: opay_db
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=opaysecret
+      - MYSQL_DATABASE=ai_banking_support
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Map SQL files to auto-run on container start
+      - ./schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/2-seed.sql
+    restart: always
+
+volumes:
+  mysql_data:
