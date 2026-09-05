@@ -1,79 +1,82 @@
 <%- include('partials/header') %>
-<%- include('partials/navbar') %>
+    <%- include('partials/navbar') %>
 
-<section class="py-5 mt-5">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center mb-5">
-                <h1 class="display-4 fw-bold">Contact Support</h1>
-                <p class="lead text-muted">While our AI resolves most issues instantly, our human team is always here for you.</p>
-            </div>
-        </div>
-        
-        <div class="row g-5">
-            <div class="col-lg-5">
-                <div class="bg-opay-green text-white p-5 rounded-4 shadow-lg h-100">
-                    <h3 class="fw-bold mb-4">Get In Touch</h3>
-                    <p class="opacity-75 mb-5">We'd love to hear from you. Fill out the form or reach us via our official channels.</p>
-                    
-                    <div class="d-flex align-items-center mb-4">
-                        <i class="fa-solid fa-location-dot fs-4 me-4 opacity-75"></i>
-                        <div>
-                            <h6 class="mb-1 fw-bold">Head Office</h6>
-                            <p class="mb-0 opacity-75">123 Fintech Avenue, Lagos, Nigeria</p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex align-items-center mb-4">
-                        <i class="fa-solid fa-envelope fs-4 me-4 opacity-75"></i>
-                        <div>
-                            <h6 class="mb-1 fw-bold">Email Us</h6>
-                            <p class="mb-0 opacity-75">support@opaysimulation.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-phone fs-4 me-4 opacity-75"></i>
-                        <div>
-                            <h6 class="mb-1 fw-bold">Call Center</h6>
-                            <p class="mb-0 opacity-75">+234 800 OPAY SUPPORT</p>
-                        </div>
+        <section class="py-5 mt-5">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center mb-5">
+                        <h1 class="display-4 fw-bold">Contact Support</h1>
+                        <p class="lead text-muted">While our AI resolves most issues instantly, our human team is always
+                            here for you.</p>
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-lg-7">
-                <div class="card border-0 shadow-sm rounded-4 h-100">
-                    <div class="card-body p-5">
-                        <h4 class="fw-bold mb-4">Send a Message</h4>
-                        <form action="/contact" method="POST">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control form-control-lg" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-control form-control-lg" required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Subject</label>
-                                    <input type="text" class="form-control form-control-lg" required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Message</label>
-                                    <textarea class="form-control form-control-lg" rows="5" required></textarea>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-opay btn-lg w-100 rounded-pill">Send Message</button>
+
+                <div class="row g-5">
+                    <div class="col-lg-5">
+                        <div class="bg-opay-green text-white p-5 rounded-4 shadow-lg h-100">
+                            <h3 class="fw-bold mb-4">Get In Touch</h3>
+                            <p class="opacity-75 mb-5">We'd love to hear from you. Fill out the form or reach us via our
+                                official channels.</p>
+
+                            <div class="d-flex align-items-center mb-4">
+                                <i class="fa-solid fa-location-dot fs-4 me-4 opacity-75"></i>
+                                <div>
+                                    <h6 class="mb-1 fw-bold">Head Office</h6>
+                                    <p class="mb-0 opacity-75">123 Fintech Avenue, Lagos, Nigeria</p>
                                 </div>
                             </div>
-                        </form>
+
+                            <div class="d-flex align-items-center mb-4">
+                                <i class="fa-solid fa-envelope fs-4 me-4 opacity-75"></i>
+                                <div>
+                                    <h6 class="mb-1 fw-bold">Email Us</h6>
+                                    <p class="mb-0 opacity-75">support@opaysimulation.com</p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-phone fs-4 me-4 opacity-75"></i>
+                                <div>
+                                    <h6 class="mb-1 fw-bold">Call Center</h6>
+                                    <p class="mb-0 opacity-75">+234 800 OPAY SUPPORT</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body p-5">
+                                <h4 class="fw-bold mb-4">Send a Message</h4>
+                                <form action="/contact" method="POST">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control form-control-lg" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" class="form-control form-control-lg" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Subject</label>
+                                            <input type="text" class="form-control form-control-lg" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Message</label>
+                                            <textarea class="form-control form-control-lg" rows="5" required></textarea>
+                                        </div>
+                                        <div class="col-12 mt-4">
+                                            <button type="submit" class="btn btn-opay btn-lg w-100 rounded-pill">Send
+                                                Message</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-<%- include('partials/footer') %>
+        <%- include('partials/footer') %>

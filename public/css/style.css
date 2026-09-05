@@ -19,9 +19,11 @@
     --aiop-warning: #d97706;
     --aiop-info: #0891b2;
 
-    /* Borders and Border Radius */
+    /* Borders, Shadows, and Border Radius */
     --aiop-border-width: 1px;
-    --aiop-radius: 4px; /* Crisp, flat corners */
+    --aiop-radius: 16px; /* Soft, rounded corners */
+    --aiop-shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --aiop-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
 }
 
 /* Base resets & typography */
@@ -61,10 +63,11 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--aiop-radius);
 }
 
-/* Flat Cards */
+/* Soft Cards */
 .aiop-card {
     background-color: var(--aiop-white);
-    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    border: none;
+    box-shadow: var(--aiop-shadow);
     border-radius: var(--aiop-radius);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -128,13 +131,13 @@ h1, h2, h3, h4, h5, h6 {
     background-clip: padding-box;
     border: var(--aiop-border-width) solid var(--aiop-slate-200);
     border-radius: var(--aiop-radius);
-    transition: none; /* Instant feedback */
+    transition: all 0.2s ease-in-out; /* Smooth transition */
 }
 
 .aiop-input:focus {
     outline: none;
     border-color: var(--aiop-green);
-    box-shadow: none;
+    box-shadow: 0 0 0 3px var(--aiop-green-light);
 }
 
 /* Flat Buttons */
@@ -151,8 +154,9 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     user-select: none;
     border: var(--aiop-border-width) solid transparent;
-    border-radius: var(--aiop-radius);
-    transition: none;
+    border-radius: 9999px; /* Pill-shaped soft buttons */
+    transition: all 0.2s ease;
+    box-shadow: var(--aiop-shadow-sm);
 }
 
 .aiop-btn-primary {
@@ -162,6 +166,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .aiop-btn-primary:hover {
     background-color: var(--aiop-green-dark);
+    box-shadow: 0 4px 6px -1px rgba(0, 184, 83, 0.3), 0 2px 4px -1px rgba(0, 184, 83, 0.2);
+    transform: translateY(-1px);
 }
 
 .aiop-btn-secondary {
@@ -205,7 +211,7 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: var(--aiop-radius);
+    border-radius: 9999px; /* Soft pill shape */
     border: 1px solid transparent;
 }
 
@@ -238,7 +244,8 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     height: 70vh;
-    border: var(--aiop-border-width) solid var(--aiop-slate-200);
+    border: none;
+    box-shadow: var(--aiop-shadow);
     border-radius: var(--aiop-radius);
     background-color: var(--aiop-white);
     overflow: hidden;
@@ -267,12 +274,13 @@ h1, h2, h3, h4, h5, h6 {
     border-top: var(--aiop-border-width) solid var(--aiop-slate-200);
 }
 
-/* Chat Bubbles */
+/* Soft Chat Bubbles */
 .aiop-chat-bubble {
     max-width: 75%;
     margin-bottom: 1rem;
     padding: 0.875rem 1.125rem;
     border-radius: var(--aiop-radius);
+    box-shadow: var(--aiop-shadow-sm);
     font-size: 0.95rem;
     word-break: break-word;
     border: var(--aiop-border-width) solid transparent;
@@ -281,21 +289,24 @@ h1, h2, h3, h4, h5, h6 {
 .aiop-chat-bubble-user {
     background-color: var(--aiop-green);
     color: var(--aiop-white);
-    border-color: var(--aiop-green-dark);
+    border: none;
+    border-bottom-right-radius: 4px; /* Chat tail effect */
     margin-left: auto;
 }
 
 .aiop-chat-bubble-bot {
     background-color: var(--aiop-white);
     color: var(--aiop-dark);
-    border-color: var(--aiop-slate-200);
+    border: none;
+    border-bottom-left-radius: 4px;
     margin-right: auto;
 }
 
 .aiop-chat-bubble-agent {
     background-color: #eff6ff;
     color: #1e3a8a;
-    border-color: #bfdbfe;
+    border: none;
+    border-bottom-left-radius: 4px;
     margin-right: auto;
 }
 
@@ -401,11 +412,14 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--aiop-slate-700);
     cursor: pointer;
     font-size: 0.85rem;
-    border-radius: var(--aiop-radius);
+    border-radius: 9999px;
+    transition: all 0.2s ease;
 }
 
 .aiop-suggestion-chip:hover {
     background-color: var(--aiop-green-light);
     color: var(--aiop-green-dark);
     border-color: var(--aiop-green);
+    transform: translateY(-1px);
+    box-shadow: var(--aiop-shadow-sm);
 }

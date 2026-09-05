@@ -26,6 +26,11 @@ app.use(session({
     }
 }));
 
+// Initialize Passport
+const passport = require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Template Engine Config (EJS)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

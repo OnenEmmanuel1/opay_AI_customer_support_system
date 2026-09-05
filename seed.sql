@@ -1,5 +1,5 @@
 -- OpaySupportAI Database Seed File
-USE ai_banking_support;
+USE ai_banking_support_v2;
 
 -- 1. Seed Users (Password: password123)
 -- Hash: $2b$10$X1j8Vb.xV2O5p6v6PZpT0.627r04q/jT3H/m5Yx58J7L6G36/6f6u

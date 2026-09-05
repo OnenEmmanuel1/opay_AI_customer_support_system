@@ -1,7 +1,8 @@
 -- OpaySupportAI Database Schema
 
-CREATE DATABASE IF NOT EXISTS ai_banking_support;
-USE ai_banking_support;
+DROP DATABASE IF EXISTS ai_banking_support_v2;
+CREATE DATABASE ai_banking_support_v2;
+USE ai_banking_support_v2;
 
 -- Disable foreign key checks to prevent drop table errors
 SET FOREIGN_KEY_CHECKS = 0;
@@ -31,7 +32,9 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) DEFAULT NULL,
+    google_id VARCHAR(255) UNIQUE DEFAULT NULL,
+    facebook_id VARCHAR(255) UNIQUE DEFAULT NULL,
     role ENUM('customer', 'agent', 'admin') NOT NULL DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -34,4 +34,48 @@ router.get('/logout', (req, res) => {
     }
 });
 
+const passport = require('passport');
+
+// Initiate Google OAuth flow
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Google OAuth callback
+router.get('/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/auth/login' }),
+    (req, res) => {
+        // Successful authentication, manually set session
+        const user = req.user;
+        req.session.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+        };
+        
+        const redirectUrl = (user.role === 'admin' || user.role === 'agent') ? '/admin/dashboard' : '/customer/dashboard';
+        res.redirect(redirectUrl);
+    }
+);
+
+// Initiate Facebook OAuth flow
+router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+
+// Facebook OAuth callback
+router.get('/facebook/callback', 
+    passport.authenticate('facebook', { failureRedirect: '/auth/login' }),
+    (req, res) => {
+        // Successful authentication, manually set session
+        const user = req.user;
+        req.session.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+        };
+        
+        const redirectUrl = (user.role === 'admin' || user.role === 'agent') ? '/admin/dashboard' : '/customer/dashboard';
+        res.redirect(redirectUrl);
+    }
+);
+
 module.exports = router;
